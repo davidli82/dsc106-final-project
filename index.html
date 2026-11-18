@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore when global warming projections diverge across three CMIP6 pathways.">
+  <title>How Far Apart Do Our Climate Futures Get?</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script defer src="./prototype.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrapper header-inner">
+      <span class="wordmark">Climate futures</span>
+      <nav aria-label="Article">
+        <a href="#explore">Explore</a>
+        <a href="#methods">Methods</a>
+        <a href="#writeup">Writeup</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrapper">
+    <section class="intro" aria-labelledby="title">
+      <h1 id="title">How far apart do our climate futures get?</h1>
+      <div class="intro-copy">
+        <p>Three climate pathways start with similar warming projections in 2021–2030. Follow the same 40 climate models through the century to see when those futures separate.</p>
+        <p class="byline">David Li, Austin Flippo, and Ryan Namdar</p>
+      </div>
+    </section>
+
+    <section id="explore" class="explore" aria-labelledby="explore-title">
+      <div class="section-intro">
+        <h2 id="explore-title">When do the pathways diverge?</h2>
+        <p>Move from the first decade to the last. Which pathway comes closest to an even split over 3°C?</p>
+      </div>
+
+      <div class="explorer" id="explorer" hidden>
+        <div class="chart-area">
+          <div class="chart-heading">
+            <h3>Median global warming</h3>
+            <p>°C above each model’s 1850–1900 average</p>
+          </div>
+          <div id="chart" class="chart"></div>
+        </div>
+
+        <div class="controls">
+          <div class="decade-control">
+            <div class="control-heading">
+              <label for="decade">Selected decade</label>
+              <output id="period-label" for="decade"></output>
+            </div>
+            <input id="decade" type="range" min="0" max="7" step="1" value="0">
+            <div class="range-endpoints" aria-hidden="true"><span>2021–2030</span><span>2091–2100</span></div>
+          </div>
+
+          <fieldset class="threshold">
+            <legend>Warming threshold</legend>
+            <div class="threshold-options">
+              <label><input name="threshold" type="radio" value="2"><span>2°C</span></label>
+              <label><input name="threshold" type="radio" value="3" checked><span>3°C</span></label>
+            </div>
+          </fieldset>
+        </div>
+
+        <section class="results" aria-labelledby="results-title">
+          <h3 id="results-title">Models averaging at least <span id="threshold-label">3°C</span></h3>
+          <div id="results" class="result-grid"></div>
+          <p id="summary" class="sr-only" aria-live="polite"></p>
+        </section>
+      </div>
+      <p id="load-status" role="status">Loading the CMIP6 model data…</p>
+      <noscript><p>Enable JavaScript to explore the climate projections.</p></noscript>
+    </section>
+
+    <section class="takeaway" aria-labelledby="takeaway-title">
+      <h2 id="takeaway-title">By the last decade, the models tell three different stories.</h2>
+      <p>In 2091–2100, none of the 40 models average at least 3°C of warming under SSP1-2.6. Under SSP5-8.5, all 40 do. SSP2-4.5 is closest to an even split, with 22 models at or above 3°C and 18 below it.</p>
+    </section>
+
+    <section id="methods" class="text-section" aria-labelledby="methods-title">
+      <h2 id="methods-title">Data and methods</h2>
+      <div>
+        <p>We use global mean near-surface air temperature from CMIP6, compiled by Mathias Hauser at ETH Zurich. Each value is an average over the selected ten years, expressed in degrees Celsius above that model’s 1850–1900 historical average. SSP1-2.6, SSP2-4.5, and SSP5-8.5 describe low, intermediate, and high emissions pathways.</p>
+        <p>We weight the 40 models equally and use one simulation per model for each pathway. The same models appear in every comparison. Counts describe this group of models under the specified pathways. The project CSV is a filtered and reformatted subset of the source.</p>
+        <p><a href="https://github.com/mathause/cmip_temperatures/blob/937855de91e2f05f7b4c7f2b4a6208f811076cd4/temperatures/cmip6/csv/cmip6_temperatures_one_ens_1850_1900.csv">Source CSV</a> · <a href="https://doi.org/10.5281/zenodo.5532894">Archive citation</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a></p>
+      </div>
+    </section>
+
+    <section id="writeup" class="text-section" aria-labelledby="writeup-title">
+      <h2 id="writeup-title">Prototype writeup</h2>
+      <div>
+        <h3>What have we done so far?</h3>
+        <p>We made six exploratory plots to compare projected warming across three CMIP6 pathways. We matched 40 models across the pathways and plotted their median warming for eight decades in D3. The decade slider highlights a period and updates the median and model count for each pathway. Readers can switch between 2°C and 3°C to see how threshold counts change for the same decade.</p>
+        <h3>What will be the most challenging part to design and why?</h3>
+        <p>The hardest part will be showing how much models disagree within a pathway while keeping the three pathways easy to compare. The median line gives each pathway a clear trajectory, but it leaves the distribution of individual model values out of view. For example, the last-decade SSP2-4.5 median is about 3.1°C, and 18 of the 40 models still average below 3°C. We want to test whether highlighting the same model across all three pathways lets readers explore that spread without obscuring the median trends.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrapper footer-inner">
+      <span>DSC 106 Final Project</span>
+      <a href="https://github.com/davidli82/dsc106-final-project">Project repository</a>
+    </div>
+  </footer>
+</body>
+</html>
